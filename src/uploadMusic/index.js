@@ -1,8 +1,6 @@
 const express = require('express');
-const config = require('./config');
 const morgan = require('morgan')
 const cors = require('cors')
-//const { connectDB } = require('./db');
 const tracksRoutes = require('./routes/Tracks_routes')
 
 
@@ -18,6 +16,13 @@ app.use(cors())
 app.use(tracksRoutes)
 
 //SERVER
-app.listen(config.port, ()=> {
-  console.log(`server on port ${config.port}`) 
-})
+
+const startUpload = async ({port})=>{
+  app.listen(port, ()=> {
+    console.log(`🚀🚀 server on port ${port}`) 
+  })
+}
+
+module.exports ={
+  startUpload
+}

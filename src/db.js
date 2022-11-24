@@ -1,8 +1,17 @@
-//const { connect } = require('mongoose');
-const { db } = require ('./config')
+const { connect } = require('mongoose');
+require('dotenv').config()
 const { MongoClient } = require('mongodb')
-
+const db = process.env.MONGODB
 let connectDBM
+
+const connectDBGql = ()=>{
+  try {
+    connect(db)
+    console.log('conect db true');
+  } catch (error) {
+    return error
+  }
+};
 
 MongoClient.connect(db, { useUnifiedTopology : true}, (err, client) =>{
   if (err){
@@ -15,4 +24,4 @@ MongoClient.connect(db, { useUnifiedTopology : true}, (err, client) =>{
 const connectDB = () => connectDBM
 
 
-module.exports = { connectDB }
+module.exports = { connectDB, connectDBGql }

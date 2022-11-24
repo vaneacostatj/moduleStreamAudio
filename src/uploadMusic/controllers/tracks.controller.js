@@ -1,14 +1,15 @@
 const multer = require('multer')
-const { connectDB }  = require('../db')
-const { GridFSBucket, ObjectId } = require('mongodb')
+const { connectDB }  = require('../../db')
+const { GridFSBucket } = require('mongodb')
 const { Readable } = require('stream') //convert a buffer to a string
+const { generateId } = require('@codecraftkit/utils')
 
 
 const getTrack =  (req, res)=>{
   let id
 
   try {
-    id = new ObjectId(req.params.ID)
+    id = req.params.ID
   } catch (error) {
     return res.status(400).json({message: 'invalid track in your url'})
   } // check if the id exists in the database
@@ -82,9 +83,10 @@ const uploadTrack = (req, res)=>{
       bucketName: 'tracks'
     }) // it's like giving the name of the collection the name of the audio container
 
+    let ID = generateId()
     //upload file via bucket
-    const uploadStream = bucket.openUploadStream(trackName);
-    const id = uploadStream.ID
+    const uploadStream = bucket.openUploadStream(trackName, {chunkSizeBytes:null, id:ID, metadata:{speaker: "Bill Gates", duration:"1hr"}, contentType: null, aliases: null});
+    const id = ID
     readableTrackString.pipe(uploadStream)//this is so that as you get the string you pass it to mongo db
     //send the audio and also the name
 
