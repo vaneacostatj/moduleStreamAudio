@@ -1,6 +1,7 @@
 const { connect } = require('mongoose');
-require('dotenv').config()
 const { MongoClient } = require('mongodb')
+require('dotenv').config()
+
 const db = process.env.MONGODB
 let connectDBM
 
